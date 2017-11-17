@@ -1,16 +1,14 @@
 package datastructure;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Node {
+public class Node implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
 	private char letter;
 	private HashMap <Character, Node> children;
-	public HashMap<Character, Node> getChildren() {
-		return children;
-	}
-
 	private HashMap <String, HashMap<Integer,Integer>> words;
 	
 	public Node(char letter) {
@@ -26,7 +24,11 @@ public class Node {
 	public void setLetter(char letter) {
 		this.letter = letter;
 	}
-
+	
+	public HashMap<Character, Node> getChildren() {
+		return children;
+	}
+	
 	public boolean isEnd() {
 		if(this.words.size() > 0) return true;
 		return false;

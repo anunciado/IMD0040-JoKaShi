@@ -22,7 +22,7 @@ public class SearchModule {
 	}
 
 	public String search(String word) {
-		/* List<String> words = new ArrayList<String>(Arrays.asList(word.split(" ")));
+		List<String> words = new ArrayList<String>(Arrays.asList(word.split(" ")));
 		for (String wordAux: words) {
 			wordAux = wordAux.replaceAll(" " , "");
 			wordAux = wordAux.replaceAll("[|_]*\\{!-/\\}\\{0-9\\}\\{:-@\\}\\{[-]\\}","").toLowerCase();
@@ -36,7 +36,6 @@ public class SearchModule {
 		}
 		else {
 			return "Mais de duas palavras.";
-		} */
-		return this.trie.contains(word);
+		}
 	}
 }
