@@ -67,12 +67,12 @@ public class Main{
                     int choice2 = Integer.parseInt(scan.nextLine());            
                     switch (choice2) {
                     	case 1: 
-                    		String occurrenceOR = searchModule.search(scan.nextLine(), "or");
+                    		String occurrenceOR = searchModule.search(words, "or");
                     		System.out.println("Search result:");
                     		System.out.println(occurrenceOR);                  
                     		break;                          
                     	case 2: 
-                    		String occurrenceAND = searchModule.search(scan.nextLine(), "and");
+                    		String occurrenceAND = searchModule.search(words, "and");
                     		System.out.println("Search result:");
                     		System.out.println(occurrenceAND);
                     		break;

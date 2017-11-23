@@ -3,8 +3,16 @@ package modules;
 import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.Map.Entry;
 
+import database.Stats;
 import datastructure.Trie;
 
 public class SearchModule {
@@ -31,17 +39,88 @@ public class SearchModule {
 			wordAux = wordAux.replaceAll("[|_.,]+","");
 			wordAux = wordAux.replaceAll("\\{!-@\\}\\{[-]\\}","");
 		}
-		java.util.Collections.sort(words);
 		if(words.size() == 2) {
-			return this.trie.contains(words.get(0)) + this.trie.contains(words.get(1));
+			if (mode.equals("or")) {
+				HashMap <String, Stats> map1 = trie.contains(words.get(0));
+				HashMap <String, Stats> map2 = trie.contains(words.get(1));
+				if(map1 != null && map2 != null) {
+					return null;
+				}
+				else if(map1 != null && map2 == null) {
+					return null;
+				}
+				else if(map1 == null && map2 != null) {
+					return null;
+				}
+				else {
+					return "Palavras não encontradas ou impróprias";
+				}
+			}
+			else {
+				HashMap <String, Stats> map1 = trie.contains(words.get(0));
+				HashMap <String, Stats> map2 = trie.contains(words.get(1));
+				if(map1 != null && map2 != null) {
+					return null;
+				}
+				else if(map1 != null && map2 == null) {
+					return null;
+				}
+				else if(map1 == null && map2 != null) {
+					return null;
+				}
+				else {
+					return "Palavras não encontradas ou impróprias";
+				}
+			}
 		}
 		else if (words.size() == 1) {
-			return this.trie.contains(words.get(0));
+			HashMap <String, Stats> map = trie.contains(words.get(0));
+			if(map != null) {
+				String s = "";
+				for (Map.Entry <String, Stats > entry : map.entrySet()) {
+					String file = entry.getKey();
+					Stats stats = entry.getValue();
+					HashMap<Integer,Integer> lines = stats.getLines();
+				    for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
+				        int line = entry2.getKey();
+				        int occurrence = entry2.getValue();
+				        if (occurrence > 1){
+					        s = s.concat(file + ": " + occurrence + "​ ocorrência​s da palavra " + word + "​​ na linha " + line + "\n");
+				        }
+				        else{
+					        s = s.concat(file + ": " + occurrence + "​ ocorrência​ da palavra " + word + "​​ na linha " + line + "\n");
+				        }
+				    }
+				}
+				return s;
+			}
+			else {
+				return "Palavra não encontrada ou imprópria";
+			}
+			
 		}
 		else {
 			return "Mais de duas palavras.";
 		}
 	}
+	
+	public Map<String, Stats> sortByValues(Map<String, Stats> map){
+        List<Map.Entry<String, Stats>> entries = new LinkedList<Map.Entry<String, Stats>>(map.entrySet());
+     
+        Collections.sort(entries, new Comparator<Map.Entry<String, Stats>>() {
+
+            @Override
+            public int compare(Entry<String, Stats> o1, Entry<String, Stats> o2) {
+                return o1.getValue().compareTo(o2.getValue());
+            }
+        });
+        Map<String, Stats> sortedMap = new LinkedHashMap<String, Stats>();
+        for(Map.Entry<String, Stats> entry: entries){
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
+    }
+
 	
 	public int calculateDistance(String str1, String str2) {
 		int distance = 0;

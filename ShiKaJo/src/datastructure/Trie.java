@@ -3,6 +3,8 @@ package datastructure;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import database.Stats;
+
 public class Trie implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -51,22 +53,20 @@ public class Trie implements Serializable {
 		}
 	} 
 	
-	public String contains(String word) {
+	public HashMap<String, Stats> contains(String word) {
         Node current = this.root; 
         for (char letter : word.toCharArray()){
             if (current.get(letter) == null) {
-            	return "Nenhuma ocorrência da palavra " + word;
+            	return null;
             }       
             else {
             	current = current.get(letter);
             }
         }      
-        if (current.isEnd() == true) {
-        	String occurrence = current.toString();
-        	occurrence = occurrence.replaceAll(Character.toString(Character.MIN_VALUE), word);
-        	return occurrence;
+        if (current.isEnd()) {
+        	return current.getWords();
         } 
-        return "Nenhuma ocorrência da palavra " + word;
+        return null;
 	}
 	
 	public void show(Node node, String word) {

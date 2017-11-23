@@ -2,19 +2,20 @@ package datastructure;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
+
+import database.Stats;
 
 public class Node implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	private char letter;
 	private HashMap <Character, Node> children;
-	private HashMap <String, HashMap<Integer,Integer>> words;
+	private HashMap <String, Stats> words;
 	
 	public Node(char letter) {
 		this.letter = letter;
 		this.children = new HashMap <Character, Node>();
-		this.words = new HashMap <String, HashMap<Integer,Integer>>();
+		this.words = new HashMap <String, Stats>();
 	}
 	
 	public char getLetter() {
@@ -36,19 +37,19 @@ public class Node implements Serializable{
 
 	public void setEnd(String file, int line) {
 		if(this.words.containsKey(file)) {
-			HashMap<Integer, Integer> lines = this.words.get(file);
-			if(lines.containsKey(line)) {
-				lines.put(line, lines.get(line) + 1);
+			Stats stats = this.words.get(file);
+			if(stats.getLines().containsKey(line)) {
+				stats.getLines().put(line, stats.getLines().get(line) + 1);
 			}
 			else {
-				lines.put(line, 1);
+				stats.getLines().put(line, 1);
 			}
-			this.words.put(file, lines);
+			this.words.put(file, stats);
 		}
 		else {
-			HashMap<Integer, Integer> lines = new HashMap<Integer, Integer>();
-			lines.put(line, 1);
-			this.words.put(file, lines);
+			Stats stats = new Stats();
+			stats.getLines().put(line, 1);
+			this.words.put(file, stats);
 		}
 	}
 	
@@ -74,28 +75,22 @@ public class Node implements Serializable{
 		return false;
 	}
 	
+	public HashMap<String, Stats> getWords() {
+		if(words.containsKey("blacklist.txt")) {
+			return null;
+		}
+		else {
+			return words;
+		}
+	}
+
 	public String toString() {
 		if(this.isEnd()) {
 			if(words.containsKey("blacklist.txt")) {
 				return "Palavra imprópria";
 			}
 			else {
-				String s = "";
-				for (Map.Entry <String, HashMap<Integer,Integer>> entry : words.entrySet()) {
-					String file = entry.getKey();
-				    HashMap<Integer,Integer> lines = entry.getValue();
-				    for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
-				        int line = entry2.getKey();
-				        int occurrence = entry2.getValue();
-				        if (occurrence > 1){
-					        s = s.concat(file + ": " + occurrence + "​ ocorrência​s da palavra " + Character.MIN_VALUE + "​​ na linha " + line + "\n");
-				        }
-				        else{
-					        s = s.concat(file + ": " + occurrence + "​ ocorrência​ da palavra " + Character.MIN_VALUE + "​​ na linha " + line + "\n");
-				        }
-				    }
-				}
-				return s;
+				return String.valueOf(this.getLetter());
 			}
 		}
 		return String.valueOf(this.getLetter());	
