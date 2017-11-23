@@ -69,6 +69,11 @@ public class Node implements Serializable{
 		return children.size();
 	}
 	
+	public boolean hasChildren() {
+		if(children.size() > 0) return true;
+		return false;
+	}
+	
 	public String toString() {
 		if(this.isEnd()) {
 			if(words.containsKey("blacklist.txt")) {

@@ -1,6 +1,7 @@
 package datastructure;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 public class Trie implements Serializable {
 	
@@ -68,12 +69,36 @@ public class Trie implements Serializable {
         return "Nenhuma ocorrência da palavra " + word;
 	}
 	
-	/* public List<String> getWordSuggestions(String word) {
-        List<String> suggestionsList = new ArrayList <String>();
-		return null; 
-
-    } 
-	*/
+	public void show(Node node, String word) {
+		if(node.hasChildren()) {
+			HashMap<Character, Node> children = node.getChildren();
+			for (Node value : children.values()) {
+				if(value.isEnd()) {
+					System.out.println(word + value.getLetter());
+				}
+				if(value.hasChildren()) {
+				  	show(value, word.concat(Character.toString(value.getLetter())));
+				}
+			}
+		}
+	}
+	
+	public void show() {
+		Node node = this.root;
+		String word = "";
+		if(node.hasChildren()) {
+			HashMap<Character, Node> children = node.getChildren();
+			for (Node value : children.values()) {
+				if(value.isEnd()) {
+				 	System.out.println(word + value.getLetter());
+				}
+				if(value.hasChildren()) {
+				  	show(value, word.concat(Character.toString(value.getLetter())));
+				}
+			}
+		}
+	}	   
+	   
 	public boolean isEmpty() {
 		if (getRoot().isEnd()) return true;
 		return false;

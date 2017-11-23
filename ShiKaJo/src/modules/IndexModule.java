@@ -4,10 +4,13 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 import java.util.HashSet;
+
 
 import database.Base;
 import datastructure.Trie;
@@ -23,46 +26,67 @@ public class IndexModule {
 	
 	public void index(String location) {
 		try{
-			// Open the file that is the first 
-			// command line parameter
-			FileInputStream fstream = new FileInputStream(location);
-			// Get the object of DataInputStream
-			DataInputStream in = new DataInputStream(fstream);
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			HashSet <String> auxiliar = new HashSet<String>();
-			String strLine;
-			//Read File Line By Line
 			location = location.substring(location.lastIndexOf("/") + 1);
-			//File file = new File(location);
-			for (int i = 1; (strLine = br.readLine()) != null; i++) {
-				List<String> words = new ArrayList<String>(Arrays.asList(strLine.split(" ")));
-				for (String word: words) {
-					word = word.replaceAll(" " , "");
-				}
-				words.removeAll(Arrays.asList(""));
-				for (String word: words) {
-					//TODO Ver se números são importantes
-					String result = word.replaceAll("[|_]*\\{!-/\\}\\{0-9\\}\\{:-@\\}\\{[-]\\}","").toLowerCase();
-					this.trie.insert(result, location, i);
-					auxiliar.add(word);
-				}
+			if (base.contains(location)){
+				System.err.println("File already added!");
 			}
-			base.put(location, auxiliar.size());
-			//Close the input stream
-			in.close();
-			} catch (Exception e){//Catch exception if any
-				System.err.println("Error: " + e.getMessage());
-			}
+			else {
+				// Open the file that is the first 
+				// command line parameter
+				FileInputStream fstream = new FileInputStream(location);
+				// Get the object of DataInputStream
+				DataInputStream in = new DataInputStream(fstream);
+				BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				Set <String> auxiliar = new HashSet<String>();
+				String strLine;
+				//Read File Line By Line
+				for (int i = 1; (strLine = br.readLine()) != null; i++) {
+					List<String> words = new ArrayList<String>(Arrays.asList(strLine.split(" ")));
+					for (String word: words) {
+						word = word.replaceAll(" " , "");
+					}
+					words.removeAll(Arrays.asList(""));
+					for (String word: words) {
+						String result = Normalizer.normalize(word, Normalizer.Form.NFD);
+						result = result.replaceAll("[^\\p{ASCII}]", "").toLowerCase();
+						result = result.replaceAll("[|_.,]+","");
+						result = result.replaceAll("\\{!-@\\}\\{[-]\\}","");
+						this.trie.insert(result, location, i);
+						auxiliar.add(result);
+					}
+				}
+				base.put(location, auxiliar.size());
+				//Close the input stream
+				in.close();
+			} 
+		}
+		catch (Exception e){//Catch exception if any
+			System.err.println("Error: " + e.getMessage());
+		}
 	}
 	
 	public void remove(String file) {
 		file = file.substring(file.lastIndexOf("/") + 1);
-		this.trie.remove(file);
+		this.show();
+		if (base.contains(file)){
+			this.trie.remove(file);
+			this.base.remove(file);
+			this.show();
+		}
+		else {
+			System.err.println("File not added!");
+		}
 	}
 	
-	public void update(String file) {
-		this.trie.remove(file);
-		this.index(file);
+	public void update(String location) {
+		if (base.contains(location.substring(location.lastIndexOf("/") + 1))){
+			this.remove(location);
+			this.index(location);
+		}
+		else {
+			System.err.println("File not added!");
+		}
+		
 	}
 	
 	public Trie getTrie() {

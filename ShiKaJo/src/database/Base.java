@@ -3,6 +3,7 @@ package database;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Base implements Serializable {
 
@@ -17,13 +18,21 @@ public class Base implements Serializable {
 		files.put(file, words);
 	}
 	
+	public void remove(String file) {
+		files.remove(file);
+	}
+	public boolean contains(String file) {
+		return files.containsKey(file);
+	}
+	
 	
 	public String toString() {
 		String s = "";
-		for (Map.Entry <String, Integer> entry : files.entrySet()) {
+		TreeMap<String, Integer> sorted = new TreeMap<>(files);
+		for (Map.Entry <String, Integer> entry : sorted.entrySet()) {
 			String file = entry.getKey();
 			int words = entry.getValue();
-	        s = s.concat(file + ": " + words + " palavras indexadas.");
+	        s = s.concat(file + ": " + words + " palavras indexadas. \n");
 		}
 		return s;
 	}
