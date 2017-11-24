@@ -11,6 +11,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import database.Stats;
 import datastructure.Trie;
@@ -77,7 +78,24 @@ public class SearchModule {
 			HashMap <String, Stats> map = trie.contains(words.get(0));
 			if(map != null) {
 				String s = "";
-				for (Map.Entry <String, Stats > entry : map.entrySet()) {
+				Map<String, Stats> treeMap = new TreeMap<String, Stats>(map);
+				for (Map.Entry <String, Stats > entry : treeMap.entrySet()) {
+					String file = entry.getKey();
+					Stats stats = entry.getValue();
+					HashMap<Integer,Integer> lines = stats.getLines();
+				    for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
+				        int line = entry2.getKey();
+				        int occurrence = entry2.getValue();
+				        if (occurrence > 1){
+					        s = s.concat(file + ": " + occurrence + "​ ocorrência​s da palavra " + word + "​​ na linha " + line + "\n");
+				        }
+				        else{
+					        s = s.concat(file + ": " + occurrence + "​ ocorrência​ da palavra " + word + "​​ na linha " + line + "\n");
+				        }
+				    }
+				}
+				Map<String, Stats> mapSorted = sortByValues(treeMap);
+				for (Map.Entry <String, Stats > entry : mapSorted.entrySet()) {
 					String file = entry.getKey();
 					Stats stats = entry.getValue();
 					HashMap<Integer,Integer> lines = stats.getLines();

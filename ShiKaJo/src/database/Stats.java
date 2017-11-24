@@ -27,8 +27,8 @@ public class Stats implements Comparable<Stats> {
 
 	@Override
 	public int compareTo(Stats stats) {
-		if(stats.calculeOcurrence() > this.calculeOcurrence()) return -1;
+		if(stats.calculeOcurrence() > this.calculeOcurrence()) return 1;
 		else if(stats.calculeOcurrence() > this.calculeOcurrence()) return 0;
-		else return 1;
+		else return -1;
 	}
 }
