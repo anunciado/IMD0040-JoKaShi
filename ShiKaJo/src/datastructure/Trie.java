@@ -57,7 +57,7 @@ public class Trie implements Serializable {
         Node current = this.root; 
         for (char letter : word.toCharArray()){
             if (current.get(letter) == null) {
-            	return null;
+            	return new HashMap <String, Stats>();
             }       
             else {
             	current = current.get(letter);
@@ -66,14 +66,14 @@ public class Trie implements Serializable {
         if (current.isEnd()) {
         	return current.getWords();
         } 
-        return null;
+        return new HashMap <String, Stats>();
 	}
 	
 	public void show(Node node, String word) {
 		if(node.hasChildren()) {
 			HashMap<Character, Node> children = node.getChildren();
 			for (Node value : children.values()) {
-				if(value.isEnd()) {
+				if(value.isEnd() && !value.getWords().isEmpty()) {
 					System.out.println(word + value.getLetter());
 				}
 				if(value.hasChildren()) {

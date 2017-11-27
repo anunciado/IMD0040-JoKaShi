@@ -31,7 +31,7 @@ public class Node implements Serializable{
 	}
 	
 	public boolean isEnd() {
-		if(this.words.size() > 0) return true;
+		if(this.words.size() > 0 && !words.containsKey("blacklist.txt")) return true;
 		return false;
 	}
 
@@ -77,7 +77,7 @@ public class Node implements Serializable{
 	
 	public HashMap<String, Stats> getWords() {
 		if(words.containsKey("blacklist.txt")) {
-			return null;
+			return new HashMap <String, Stats>();
 		}
 		else {
 			return words;

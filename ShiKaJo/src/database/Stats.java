@@ -1,8 +1,11 @@
 package database;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Stats implements Comparable<Stats> {
+public class Stats implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private HashMap<Integer,Integer> lines;
 	
 	public Stats() {
@@ -15,20 +18,5 @@ public class Stats implements Comparable<Stats> {
 
 	public void setLines(HashMap<Integer,Integer> lines) {
 		this.lines = lines;
-	}
-
-	public int calculeOcurrence() {
-		int ocurrence = 0;
-		for (Integer line : lines.values()) {
-			ocurrence += line;
-		}
-		return ocurrence;
-	}
-
-	@Override
-	public int compareTo(Stats stats) {
-		if(stats.calculeOcurrence() > this.calculeOcurrence()) return 1;
-		else if(stats.calculeOcurrence() > this.calculeOcurrence()) return 0;
-		else return -1;
 	}
 }

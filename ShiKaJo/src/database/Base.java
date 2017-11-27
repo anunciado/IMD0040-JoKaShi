@@ -2,37 +2,45 @@ package database;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 public class Base implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private HashMap <String, Integer> files;
+	private Map <String, Set<String>> files;
 	
 	public Base() {
-		files = new HashMap <String, Integer>();
+		files = new HashMap <String, Set<String>>();
 	}
 	
-	public void put(String file, int words) {
+	public void put(String file, Set<String> words) {
 		files.put(file, words);
 	}
 	
 	public void remove(String file) {
 		files.remove(file);
 	}
-	public boolean contains(String file) {
+	
+	public boolean containsKey(String file) {
 		return files.containsKey(file);
 	}
 	
-	
+	public boolean containsValues(String file, List <String> words) {
+		return files.get(file).containsAll(words);
+	}
+		
 	public String toString() {
 		String s = "";
-		TreeMap<String, Integer> sorted = new TreeMap<>(files);
-		for (Map.Entry <String, Integer> entry : sorted.entrySet()) {
+		TreeMap<String, Set<String>> sorted = new TreeMap<>(files);
+		for (Map.Entry <String, Set<String>> entry : sorted.entrySet()) {
 			String file = entry.getKey();
-			int words = entry.getValue();
-	        s = s.concat(file + ": " + words + " palavras indexadas. \n");
+			int words = entry.getValue().size();
+			if(!file.equals("blacklist.txt")) {
+		        s = s.concat(file + ": " + words + " palavras indexadas. \n");
+			}
 		}
 		return s;
 	}

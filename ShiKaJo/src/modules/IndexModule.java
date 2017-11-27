@@ -27,7 +27,7 @@ public class IndexModule {
 	public void index(String location) {
 		try{
 			location = location.substring(location.lastIndexOf("/") + 1);
-			if (base.contains(location)){
+			if (base.containsKey(location)){
 				System.err.println("File already added!");
 			}
 			else {
@@ -49,13 +49,13 @@ public class IndexModule {
 					for (String word: words) {
 						String result = Normalizer.normalize(word, Normalizer.Form.NFD);
 						result = result.replaceAll("[^\\p{ASCII}]", "").toLowerCase();
-						result = result.replaceAll("[|_.,]+","");
+						result = result.replaceAll("[-|_.,]+","");
 						result = result.replaceAll("\\{!-@\\}\\{[-]\\}","");
 						this.trie.insert(result, location, i);
 						auxiliar.add(result);
 					}
 				}
-				base.put(location, auxiliar.size());
+				base.put(location, auxiliar);
 				//Close the input stream
 				in.close();
 			} 
@@ -68,7 +68,7 @@ public class IndexModule {
 	public void remove(String file) {
 		file = file.substring(file.lastIndexOf("/") + 1);
 		this.show();
-		if (base.contains(file)){
+		if (base.containsKey(file)){
 			this.trie.remove(file);
 			this.base.remove(file);
 			this.show();
@@ -79,7 +79,7 @@ public class IndexModule {
 	}
 	
 	public void update(String location) {
-		if (base.contains(location.substring(location.lastIndexOf("/") + 1))){
+		if (base.containsKey(location.substring(location.lastIndexOf("/") + 1))){
 			this.remove(location);
 			this.index(location);
 		}
