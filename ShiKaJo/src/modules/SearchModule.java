@@ -15,6 +15,7 @@ import java.util.TreeMap;
 
 import database.Base;
 import database.Stats;
+import datastructure.Node;
 import datastructure.Trie;
 
 public class SearchModule {
@@ -51,62 +52,34 @@ public class SearchModule {
 			wordAux = wordAux.replaceAll("[-|_.,]+","");
 			wordAux = wordAux.replaceAll("\\{!-@\\}\\{[-]\\}","");
 		}
-		if (mode.equals("or")) {
-			String stringOr = searchModeOr(words);
-			return stringOr;
-		}
-		else {
-			String stringAnd = searchModeAnd(words);
-			return stringAnd;
-		}		
-	}
-	
-	private String searchModeOr(List<String> words) {
+		
 		Map<String, List<String>> map = new HashMap<String, List<String>>();
+		String s1 = "";
 		for (String wordAux: words) {
-			HashMap <String, Stats> map2 = trie.contains(wordAux);
-			for (Map.Entry <String, Stats > entry : map2.entrySet()) {
-				List<String> arraylist = new ArrayList<String>();
-				String file = entry.getKey();
-				Stats stats = entry.getValue();
-				HashMap<Integer,Integer> lines = stats.getLines();
-				for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
-					int line = entry2.getKey();
-					int occurrence = entry2.getValue();
-					arraylist.add(file + ": " + occurrence + "​ ocorrência​(s) da palavra " + wordAux + "​​ na linha " + line);
-				}
-				if(map.containsKey(file)) {
-					List<String> arraylist2 = map.get(file);
-					arraylist2.addAll(arraylist);
-				}
-				else {
-					map.put(file, arraylist);
-				}				
-			}
-		}
-		Map<String, List<String>> mapSorted = sort(map);
-		String s = "";
-		for (List<String> list : mapSorted.values()) {
-			s = s.concat("\n");
-			s = s.concat(String.join("\n", list));
-		}
-		return s;
-	}
-	
-	private String searchModeAnd(List<String> words) {
-		Map<String, List<String>> map = new HashMap<String, List<String>>();
-		for (String wordAux: words) {
-			HashMap <String, Stats> map2 = trie.contains(wordAux);
-			for (Map.Entry <String, Stats > entry : map2.entrySet()) {
-				List<String> arraylist = new ArrayList<String>();
-				String file = entry.getKey();
-				Stats stats = entry.getValue();
-				if (base.containsValues(file, words)) {
-					HashMap<Integer,Integer> lines = stats.getLines();
-					for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
-						int line = entry2.getKey();
-						int occurrence = entry2.getValue();
-						arraylist.add(file + ": " + occurrence + "​ ocorrência​(s) da palavra " + wordAux + "​​ na linha " + line);
+			Node nodeAux = trie.getNode(wordAux);
+			if (nodeAux != null) {
+				HashMap <String, Stats> map2 = nodeAux.getWords();
+				for (Map.Entry <String, Stats > entry : map2.entrySet()) {
+					List<String> arraylist = new ArrayList<String>();
+					String file = entry.getKey();
+					Stats stats = entry.getValue();
+					if (mode.equals("or")) {
+						HashMap<Integer,Integer> lines = stats.getLines();
+						for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
+							int line = entry2.getKey();
+							int occurrence = entry2.getValue();
+							arraylist.add(file + ": " + occurrence + "​ ocorrência​(s) da palavra " + wordAux + "​​ na linha " + line);
+						}
+					}
+					else {
+						if (base.containsValues(file, words)) {
+							HashMap<Integer,Integer> lines = stats.getLines();
+							for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
+								int line = entry2.getKey();
+								int occurrence = entry2.getValue();
+								arraylist.add(file + ": " + occurrence + "​ ocorrência​(s) da palavra " + wordAux + "​​ na linha " + line);
+							}
+						}
 					}
 					if(map.containsKey(file)) {
 						List<String> arraylist2 = map.get(file);
@@ -114,9 +87,12 @@ public class SearchModule {
 					}
 					else {
 						map.put(file, arraylist);
-					}	
-				}				
+					}
+				}
 			}
+			else {
+				s1 = levenshteinDistance(wordAux);
+			}	
 		}
 		Map<String, List<String>> mapSorted = sort(map);
 		String s = "";
@@ -124,9 +100,10 @@ public class SearchModule {
 			s = s.concat("\n");
 			s = s.concat(String.join("\n", list));
 		}
-		return s;
+		s = s.concat(s1);
+		return s;	
 	}
-	
+
 	public Map<String, List<String>> sort(Map<String, List<String>> treeMap){
 		Map<String, List<String>> map = new TreeMap<String, List<String>>(treeMap);
         List<Map.Entry<String, List<String>>> entries = new LinkedList<Map.Entry<String, List<String>>>(map.entrySet());
@@ -144,26 +121,57 @@ public class SearchModule {
         }
         return sortedMap;
     }
-
-	/*
-	public int calculateDistance(String str1, String str2) {
-		int distance = 0;
-		if (str1.isEmpty())
-			return str1.length();
-		if (str2.isEmpty())
-			return str2.length();
-		int len1 = str1.length();
-		int len2 = str2.length();
-		// Check if the last chars match
-		if (str1.charAt(len1 - 1) == str2.charAt(len2 - 1))
-			distance = 0;
-		else
-			distance = 1;
-		return Math.min(
-				Math.min(calculateDistance(str1.substring(0, len1), str2) + 1,
-						calculateDistance(str1, str2.substring(0, len2)) + 1),
-				calculateDistance(str1.substring(0, len1),
-						str2.substring(0, len2)));
+	
+	private String levenshteinDistance(String wordAux) {
+		List <String> words = new ArrayList <String>();
+		for (Node value : trie.getRoot().getChildren().values()) {
+		  levenshteinDistance2(words, value, Character.toString(value.getLetter()), wordAux);
+		}
+		String s = "";
+		for (String word : words) {
+			System.out.println(word);
+			s = s.concat(word + "\n");
+		}
+		return s;
 	}
-	*/
+	
+	
+	public void levenshteinDistance2(List<String> words, Node node, String word, String wordAux) {
+		if(node.hasChildren()) {
+			if(word.length() - wordAux.length() <= 2) {
+				HashMap<Character, Node> children = node.getChildren();
+				for (Node value : children.values()) {
+					if(value.isEnd()) {
+						word = word.concat(Character.toString(value.getLetter()));
+						if(calculateDistance(wordAux, word) <= 2 && wordAux.length() - word.length() <= 2) {
+							words.add(word);
+						}		
+					}
+					else if(value.hasChildren()) {
+						levenshteinDistance2(words, value, word.concat(Character.toString(value.getLetter())), wordAux);
+					}
+				}
+			}		
+		}
+	}
+
+	public static int calculateDistance(String a, String b) {
+        a = a.toLowerCase();
+        b = b.toLowerCase();
+        // i == 0
+        int [] costs = new int [b.length() + 1];
+        for (int j = 0; j < costs.length; j++)
+            costs[j] = j;
+        for (int i = 1; i <= a.length(); i++) {
+            // j == 0; nw = lev(i - 1, j)
+            costs[0] = i;
+            int nw = i - 1;
+            for (int j = 1; j <= b.length(); j++) {
+                int cj = Math.min(1 + Math.min(costs[j], costs[j - 1]), a.charAt(i - 1) == b.charAt(j - 1) ? nw : nw + 1);
+                nw = costs[j];
+                costs[j] = cj;
+            }
+        }
+        return costs[b.length()];
+    }
 }

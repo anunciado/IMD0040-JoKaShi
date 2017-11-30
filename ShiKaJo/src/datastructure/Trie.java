@@ -3,8 +3,6 @@ package datastructure;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import database.Stats;
-
 public class Trie implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
@@ -53,20 +51,20 @@ public class Trie implements Serializable {
 		}
 	} 
 	
-	public HashMap<String, Stats> contains(String word) {
+	public Node getNode(String word) {
         Node current = this.root; 
         for (char letter : word.toCharArray()){
             if (current.get(letter) == null) {
-            	return new HashMap <String, Stats>();
+            	return null;
             }       
             else {
             	current = current.get(letter);
             }
         }      
         if (current.isEnd()) {
-        	return current.getWords();
+        	return current;
         } 
-        return new HashMap <String, Stats>();
+        return null;
 	}
 	
 	public void show(Node node, String word) {
