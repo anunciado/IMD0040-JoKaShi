@@ -18,17 +18,19 @@ import datastructure.Trie;
 public class IndexModule {
 	private Trie trie;
 	private Base base;
+	private String message;
 	
 	public IndexModule(Trie trie, Base base) {
 		this.setTrie(trie);
 		this.setBase(base);
 	}
 	
-	public void index(String location) {
+	public String index(String location) {
 		try{
 			location = location.substring(location.lastIndexOf("/") + 1);
 			if (base.containsKey(location)){
-				System.err.println("File already added!");
+				message = "File already added!";
+				System.err.println(message);
 			}
 			else {
 				// Open the file that is the first 
@@ -58,11 +60,14 @@ public class IndexModule {
 				base.put(location, auxiliar);
 				//Close the input stream
 				in.close();
+				message = "File uploaded successfully";
 			} 
 		}
 		catch (Exception e){//Catch exception if any
-			System.err.println("Error: " + e.getMessage());
+			message = "Error: " + e.getMessage();
+			System.err.println(message);
 		}
+		return message;
 	}
 	
 	public void remove(String file) {
@@ -78,14 +83,18 @@ public class IndexModule {
 		}
 	}
 	
-	public void update(String location) {
+	public String update(String location) {
 		if (base.containsKey(location.substring(location.lastIndexOf("/") + 1))){
 			this.remove(location);
 			this.index(location);
+			message = "File updated successfully";
 		}
 		else {
-			System.err.println("File not added!");
+			message = "File not added!";
+			System.err.println(message);
 		}
+		
+		return message;
 		
 	}
 	
@@ -107,6 +116,10 @@ public class IndexModule {
 
 	public void setBase(Base base) {
 		this.base = base;
+	}
+	
+	public String toString() {
+		return base.toString();
 	}
 
 }

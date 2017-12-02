@@ -28,6 +28,7 @@ public class Main{
 		scan = new Scanner(System.in);
 		Trie trie = null;
         Base base = null;
+        
 		// Deserialization
         try
         {   
@@ -63,10 +64,12 @@ public class Main{
         
         IndexModule indexModule = new IndexModule(trie, base);
         SearchModule searchModule = new SearchModule(trie, base);
+        InitalScreen screen = new InitalScreen(indexModule, searchModule);
+    
         System.out.println(new File(".").getAbsolutePath());
         System.out.println("Trie Test\n");          
         char ch;
-        /*  Perform tree operations  */
+        
         do {
         	System.out.println("\nTrie Operations\n");
             System.out.println("1. insert");
@@ -80,7 +83,7 @@ public class Main{
             switch (choice) {
             	case 1: 
             		System.out.println("Add words of which file:");
-            		indexModule.index(scan.nextLine());                     
+            		indexModule.index(scan.nextLine());
             		break;                          
             	case 2: 
             		System.out.println("Delete words of which file:");
@@ -88,11 +91,14 @@ public class Main{
             		break; 
             	case 3: 
             		System.out.println("Update words of which file:");
-            		indexModule.update(scan.nextLine()); 
+            		indexModule.update(screen.getPathLastfileInput());
             		break; 
             	case 4: 
             		System.out.println("Added files:");
-            		System.out.println(indexModule.show());
+            		screen.setFilesList(indexModule.toString());
+            		String s = screen.getFilesList();
+            		System.out.println(s);
+            		
             		break; 
             	case 5:
             		System.out.println("Added words:");
@@ -135,7 +141,8 @@ public class Main{
             }
             System.out.println("\nDo you want to continue (Type y or n) \n");
             ch = scan.nextLine().charAt(0);  
-        } while (ch == 'Y'|| ch == 'y');  
+        } while (ch == 'Y'|| ch == 'y'); 
+
         // Serialization 
         try
         {   
