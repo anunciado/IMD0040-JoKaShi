@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.JFrame;
 import modules.*;
+import database.*;
 
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
@@ -27,11 +28,20 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import java.io.File;
+import database.Base;
+import datastructure.Trie;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.awt.SystemColor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JRadioButton;
 
@@ -43,16 +53,47 @@ public class InitalScreen extends JFrame {
 	private String filesList;
 	private JRadioButton rdbtnAnd;
 	private JRadioButton rdbtnOr;
+	Trie trie = null;
+    Base base = null;
 	private IndexModule indexModule;
 	private SearchModule searchModule;
 	
 	
-	public InitalScreen (IndexModule indexModule, SearchModule searchModule) {
+	public InitalScreen (IndexModule indexModule, SearchModule searchModule, Trie trie, Base base) {
 		this.indexModule = indexModule;
 		this.searchModule = searchModule;
+		this.trie = trie;
+		this.base = base;
 		pathLastfileInput = "";
 		setTitle("InitalScreen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		addWindowListener(new WindowAdapter() {
+	        @Override
+	        public void windowClosing(WindowEvent event) {
+	        	try
+	            {   
+	            	//Saving of object in a file
+	                FileOutputStream file1 = new FileOutputStream("load/trieFile.dat");
+	                ObjectOutputStream out1 = new ObjectOutputStream(file1);
+	                //Saving of object in a file
+	                FileOutputStream file2 = new FileOutputStream("load/baseFile.dat");
+	                ObjectOutputStream out2 = new ObjectOutputStream(file2);
+	                // Method for serialization of object
+	                out1.writeObject(trie);
+	                out2.writeObject(base);
+	                out1.close();
+	                file1.close();
+	                out2.close();
+	                file2.close();
+	                System.out.println("Base and trie has been serialized");
+	            }     
+	            catch(IOException ex)
+	            {
+	                System.out.println("IOException is caught");
+	            }
+	        }
+	    });
+		
 		setLocation(100, 50);
 		setSize(500, 400);
 		
@@ -138,13 +179,18 @@ public class InitalScreen extends JFrame {
 		menuBar.add(btnUpdate);
 		
 // SAVED FILES BUTTON
-		JButton btnArchives= new JButton("Saved files");
+		JButton btnArchives = new JButton("Saved files");
 		
 		btnArchives.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setFilesList(indexModule.toString());
-				SecondScreen ss = new SecondScreen("Saved Files");
-				ss.setAddedFiles(getFilesList());
+				if(getFilesList().equals("")) {
+					JOptionPane.showMessageDialog(btnArchives, "0 files in our database, add any first");
+				}
+				else {
+					SecondScreen ss = new SecondScreen("Saved Files");
+					ss.setAddedFiles(getFilesList());
+				}
 			}
 		});
 		
@@ -157,16 +203,42 @@ public class InitalScreen extends JFrame {
 		btnArchives.setIcon(new ImageIcon("./images/save.png"));
 		menuBar.add(btnArchives);
 		
-// DELETE BUTTON
-		JMenu mnDelete = new JMenu("Delete");
-		mnDelete.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent e) {
-				mnDelete.setToolTipText("Delete some system archive");
+// SAVED WORDS BUTTON
+		JButton btnWords = new JButton("Saved words");
+		
+		btnWords.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
 			}
 		});
-		mnDelete.setIcon(new ImageIcon("./images/trash.png"));
-		menuBar.add(mnDelete);
-		getContentPane().setLayout(new BorderLayout(0, 0));
+		
+		btnWords.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				btnArchives.setToolTipText("Words saved in the system");
+			}
+		});
+		
+		btnWords.setIcon(new ImageIcon("./images/save.png"));
+		menuBar.add(btnWords);
+
+// DELETE BUTTON
+		JButton btnDelete = new JButton("Delete file");
+			
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String file = JOptionPane.showInputDialog(btnDelete, "Name of the file you want to remove(ex: test.txt):");
+				JOptionPane.showMessageDialog(btnDelete, indexModule.remove(file));
+			}
+		});
+		
+		btnDelete.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent e) {
+				btnDelete.setToolTipText("Delete some system archive");
+			}
+		});
+		
+		btnDelete.setIcon(new ImageIcon("./images/trash.png"));
+		menuBar.add(btnDelete);
 // PANEL
 		Panel panel = new Panel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
@@ -192,6 +264,8 @@ public class InitalScreen extends JFrame {
 		searchButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				searchText = searchTextField.getText();
+				long startTime, endTime;
+				NumberFormat formatter = new DecimalFormat("#0.00000");
 				if(searchText.equals("")) {
 					JOptionPane.showMessageDialog(searchButton, "Error, nothing to search for");
 				}
@@ -200,10 +274,18 @@ public class InitalScreen extends JFrame {
 					SecondScreen ss = new SecondScreen("Result of search: ");
 					boolean option = rdbtnAnd.isSelected();
 					if(option) {
-						ss.setKeyWord(searchModule.search(searchText, "and"));
+						startTime = System.currentTimeMillis();
+						String occurrence = searchModule.search(searchText, "and");
+						endTime = System.currentTimeMillis();
+						String time = formatter.format((endTime - startTime) / 1000d);
+						ss.setKeyWord(occurrence, time);
 					}
 					else {
-						ss.setKeyWord(searchModule.search(searchText, "or"));
+						startTime = System.currentTimeMillis();
+						String occurrence = searchModule.search(searchText, "or");
+						endTime = System.currentTimeMillis();
+						String time = formatter.format((endTime - startTime) / 1000d);
+						ss.setKeyWord(occurrence, time);
 					}
 				}
 			}

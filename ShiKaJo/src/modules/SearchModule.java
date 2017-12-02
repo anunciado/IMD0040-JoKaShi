@@ -68,7 +68,7 @@ public class SearchModule {
 						for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
 							int line = entry2.getKey();
 							int occurrence = entry2.getValue();
-							arraylist.add(file + ": " + occurrence + "​ ocorrência​(s) da palavra " + wordAux + "​​ na linha " + line);
+							arraylist.add(file.substring(file.lastIndexOf("/") + 1) + ": " + occurrence + "​ ocorrência​(s) da palavra " + wordAux + "​​ na linha " + line);
 						}
 					}
 					else {
@@ -77,7 +77,7 @@ public class SearchModule {
 							for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
 								int line = entry2.getKey();
 								int occurrence = entry2.getValue();
-								arraylist.add(file + ": " + occurrence + "​ ocorrência​(s) da palavra " + wordAux + "​​ na linha " + line);
+								arraylist.add(file.substring(file.lastIndexOf("/") + 1) + ": " + occurrence + "​ ocorrência​(s) da palavra " + wordAux + "​​ na linha " + line);
 							}
 						}
 					}

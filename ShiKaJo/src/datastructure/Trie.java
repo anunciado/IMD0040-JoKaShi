@@ -2,6 +2,9 @@ package datastructure;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 public class Trie implements Serializable {
 	
@@ -95,7 +98,7 @@ public class Trie implements Serializable {
 				}
 			}
 		}
-	}	   
+	}
 	   
 	public boolean isEmpty() {
 		if (getRoot().isEnd()) return true;

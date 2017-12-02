@@ -6,6 +6,9 @@ import java.awt.BorderLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Font;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+
 import javax.swing.SwingConstants;
 import javax.swing.JPanel;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -23,8 +26,8 @@ import javax.swing.ScrollPaneConstants;
 
 public class SecondScreen extends JFrame {
 	
-		JPanel panel = new JPanel();
-		JTextArea textArea = new JTextArea();
+		JScrollPane scrollPane = new JScrollPane();
+		JTextArea txtrTeste = new JTextArea();
 	
 	public SecondScreen (String labelTitle) {
 		setTitle("SecondScreen");
@@ -35,38 +38,36 @@ public class SecondScreen extends JFrame {
 		JLabel lblNewLabel = new JLabel(labelTitle);
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Segoe UI Black", Font.BOLD, 13));
-			
 		
-		panel.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		
 		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(189)
-					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
 					.addGap(174))
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 464, Short.MAX_VALUE)
-					.addContainerGap())
+					.addGap(29)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 443, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(28, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addComponent(lblNewLabel)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 288, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(333, Short.MAX_VALUE))
+					.addGap(18)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(68, Short.MAX_VALUE))
 		);
 		
 		
-		
-		
+		txtrTeste.setEditable(false);
+		txtrTeste.setBackground(UIManager.getColor("Button.background"));
+		scrollPane.setViewportView(txtrTeste);
 		getContentPane().setLayout(groupLayout);
-		
-		
+
 		setVisible(true);
 	}
 	
@@ -75,23 +76,16 @@ public class SecondScreen extends JFrame {
 	 * @param addFiles
 	 */
 	public void setAddedFiles (String addFiles) {
-		textArea = new JTextArea(addFiles);
-		textArea.setBackground(UIManager.getColor("CheckBox.background"));
-		textArea.setEditable(false);
-		panel.add(textArea);
-		panel.repaint();
+		txtrTeste.setText(addFiles);
+		scrollPane.setViewportView(txtrTeste);
 	}
 	
 	/**
 	 * add all the infos about the keyword inserted in the search bar
 	 * @param keyWord
 	 */
-	public void setKeyWord (String keyWord) {
-		textArea = new JTextArea(keyWord);
-		textArea.setBackground(UIManager.getColor("CheckBox.background"));
-		textArea.setEditable(false);
-		panel.add(textArea);
-		panel.repaint();
-		
+	public void setKeyWord (String keyWord, String time) {
+		txtrTeste.setText("Execution time is: " + time + " seconds\n" + keyWord);
+		scrollPane.setViewportView(txtrTeste);
 	}
 }

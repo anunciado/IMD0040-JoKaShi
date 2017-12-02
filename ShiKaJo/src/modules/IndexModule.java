@@ -70,17 +70,20 @@ public class IndexModule {
 		return message;
 	}
 	
-	public void remove(String file) {
+	public String remove(String file) {
 		file = file.substring(file.lastIndexOf("/") + 1);
 		this.show();
 		if (base.containsKey(file)){
 			this.trie.remove(file);
 			this.base.remove(file);
 			this.show();
+			message = file + " removed successfully";
 		}
 		else {
-			System.err.println("File not added!");
+			message = "File not added!";
+			System.err.println(message);
 		}
+		return message;
 	}
 	
 	public String update(String location) {

@@ -64,7 +64,7 @@ public class Main{
         
         IndexModule indexModule = new IndexModule(trie, base);
         SearchModule searchModule = new SearchModule(trie, base);
-        InitalScreen screen = new InitalScreen(indexModule, searchModule);
+        InitalScreen screen = new InitalScreen(indexModule, searchModule, trie, base);
     
         System.out.println(new File(".").getAbsolutePath());
         System.out.println("Trie Test\n");          
