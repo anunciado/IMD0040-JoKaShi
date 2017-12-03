@@ -51,7 +51,7 @@ public class IndexModule {
 					for (String word: words) {
 						String result = Normalizer.normalize(word, Normalizer.Form.NFD);
 						result = result.replaceAll("[^\\p{ASCII}]", "").toLowerCase();
-						result = result.replaceAll("[-|_.,()]+","");
+						result = result.replaceAll("[-|_.,()';\"]+","");
 						result = result.replaceAll("\\{!-@\\}\\{[-]\\}","");
 						this.trie.insert(result, location, i);
 						auxiliar.add(result);
