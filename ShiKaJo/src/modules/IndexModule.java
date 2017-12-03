@@ -125,4 +125,14 @@ public class IndexModule {
 		return base.toString();
 	}
 
+	public String getWords() {
+		List <String> words = new ArrayList <String>();
+		trie.show(words);
+		StringBuffer strReturn = new StringBuffer();
+		for(String word : words) {
+			strReturn.append(word + "\n");
+		}
+		return strReturn.toString();
+	}
+
 }

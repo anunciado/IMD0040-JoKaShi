@@ -33,15 +33,15 @@ public class Base implements Serializable {
 	}
 		
 	public String toString() {
-		String s = "";
+		StringBuffer strReturn = new StringBuffer();
 		TreeMap<String, Set<String>> sorted = new TreeMap<>(files);
 		for (Map.Entry <String, Set<String>> entry : sorted.entrySet()) {
 			String file = entry.getKey();
 			int words = entry.getValue().size();
 			if(!file.equals("blacklist.txt")) {
-		        s = s.concat(file + ": " + words + " palavras indexadas. \n");
+				strReturn.append(file + ": " + words + " palavras indexadas. \n");
 			}
 		}
-		return s;
+		return strReturn.toString();
 	}
 }

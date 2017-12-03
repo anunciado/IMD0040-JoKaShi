@@ -79,6 +79,11 @@ public class SecondScreen extends JFrame {
 		scrollPane.setViewportView(txtrTeste);
 	}
 	
+	public void setAddedWords(String wordsList) {
+		txtrTeste.setText(wordsList);
+		scrollPane.setViewportView(txtrTeste);	
+	}
+	
 	/**
 	 * add all the infos about the keyword inserted in the search bar
 	 * @param keyWord

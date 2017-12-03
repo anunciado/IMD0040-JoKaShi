@@ -1,6 +1,7 @@
 package modules;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.text.Normalizer;
@@ -11,6 +12,7 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import database.Base;
@@ -51,60 +53,63 @@ public class SearchModule {
 			wordAux = wordAux.replaceAll("[^\\p{ASCII}]", "").toLowerCase();
 			wordAux = wordAux.replaceAll("[-|_.,()]+","");
 			wordAux = wordAux.replaceAll("\\{!-@\\}\\{[-]\\}","");
-		}
-		
+		}	
 		Map<String, List<String>> map = new HashMap<String, List<String>>();
-		String s1 = "";
+		StringBuffer strLevenshteinDistance = new StringBuffer();
 		for (String wordAux: words) {
 			Node nodeAux = trie.getNode(wordAux);
 			if (nodeAux != null) {
-				HashMap <String, Stats> map2 = nodeAux.getWords();
-				for (Map.Entry <String, Stats > entry : map2.entrySet()) {
-					List<String> arraylist = new ArrayList<String>();
-					String file = entry.getKey();
-					Stats stats = entry.getValue();
-					if (mode.equals("or")) {
-						HashMap<Integer,Integer> lines = stats.getLines();
-						for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
-							int line = entry2.getKey();
-							int occurrence = entry2.getValue();
-							arraylist.add(file.substring(file.lastIndexOf("/") + 1) + ": " + occurrence + "​ ocorrência​(s) da palavra " + wordAux + "​​ na linha " + line);
-						}
-					}
-					else {
-						if (base.containsValues(file, words)) {
-							HashMap<Integer,Integer> lines = stats.getLines();
-							for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
-								int line = entry2.getKey();
-								int occurrence = entry2.getValue();
-								arraylist.add(file.substring(file.lastIndexOf("/") + 1) + ": " + occurrence + "​ ocorrência​(s) da palavra " + wordAux + "​​ na linha " + line);
-							}
-						}
-					}
-					if(map.containsKey(file)) {
-						List<String> arraylist2 = map.get(file);
-						arraylist2.addAll(arraylist);
-					}
-					else {
-						map.put(file, arraylist);
-					}
-				}
+				Map <String, Stats> map2 = nodeAux.getWords();
+				transformNode(words, map, map2, wordAux, mode);
 			}
 			else {
-				s1 = levenshteinDistance(wordAux);
+				strLevenshteinDistance.append(levenshteinDistance(wordAux));
 			}	
 		}
 		Map<String, List<String>> mapSorted = sort(map);
-		String s = "";
+		StringBuffer strReturn = new StringBuffer();
 		for (List<String> list : mapSorted.values()) {
-			s = s.concat("\n");
-			s = s.concat(String.join("\n", list));
+			strReturn.append("\n");
+			strReturn.append(String.join("\n", list));
 		}
-		s = s.concat(s1);
-		return s;	
+		strReturn.append("\n");
+		strReturn.append(strLevenshteinDistance);
+		return strReturn.toString();	
+	}
+	
+	private void transformNode(List<String> words, Map<String, List<String>> map, Map <String, Stats> map2, String wordAux, String mode) {
+		for (Map.Entry <String, Stats > entry : map2.entrySet()) {
+			List<String> arraylist = new ArrayList<String>();
+			String file = entry.getKey();
+			Stats stats = entry.getValue();
+			if (mode.equals("or")) {
+				transformStats(arraylist, stats, file, wordAux);			
+			}
+			else {
+				if (base.containsValues(file, words)) {
+					transformStats(arraylist, stats, file, wordAux);
+				}
+			}
+			if(map.containsKey(file)) {
+				List<String> arraylist2 = map.get(file);
+				arraylist2.addAll(arraylist);
+			}
+			else {
+				map.put(file, arraylist);
+			}
+		}
+	}
+	
+	private void transformStats(List<String> arraylist, Stats stats, String file, String wordAux){
+		Map<Integer,Integer> lines = stats.getLines();
+		for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
+			int line = entry2.getKey();
+			int occurrence = entry2.getValue();
+			arraylist.add(file.substring(file.lastIndexOf("/") + 1) + ": " + occurrence + "​ occurrence(s) of the word " + wordAux + "​​ on the line " + line);
+		}
 	}
 
-	public Map<String, List<String>> sort(Map<String, List<String>> treeMap){
+	private Map<String, List<String>> sort(Map<String, List<String>> treeMap){
 		Map<String, List<String>> map = new TreeMap<String, List<String>>(treeMap);
         List<Map.Entry<String, List<String>>> entries = new LinkedList<Map.Entry<String, List<String>>>(map.entrySet());
      
@@ -112,7 +117,17 @@ public class SearchModule {
 
             @Override
             public int compare(Entry<String, List<String>> o1, Entry<String, List<String>> o2) {
-                return o2.getValue().size() - o1.getValue().size();
+            	List<String> occurences1 = o1.getValue();
+            	List<String> occurences2 = o2.getValue();
+            	Set <Integer> o1Set = new HashSet <Integer>();
+            	Set <Integer> o2Set = new HashSet <Integer>();
+            	for (String occurence : occurences1) {
+            		o1Set.add(Integer.parseInt(occurence.substring(occurence.lastIndexOf(" ") + 1)));
+            	}
+            	for (String occurence : occurences2) {
+            		o2Set.add(Integer.parseInt(occurence.substring(occurence.lastIndexOf(" ") + 1)));
+            	}
+                return o2Set.size() - o1Set.size();
             }
         });
         Map<String, List<String>> sortedMap = new LinkedHashMap<String, List<String>>();
@@ -125,45 +140,50 @@ public class SearchModule {
 	private String levenshteinDistance(String wordAux) {
 		List <String> words = new ArrayList <String>();
 		for (Node value : trie.getRoot().getChildren().values()) {
-		  levenshteinDistance2(words, value, Character.toString(value.getLetter()), wordAux);
+			StringBuffer word = new StringBuffer();
+			word.append(value.getLetter());
+			addWords(words, value, word, wordAux);
 		}
-		String s = "";
-		for (String word : words) {
-			System.out.println(word);
-			s = s.concat(word + "\n");
+		StringBuffer strReturn = new StringBuffer();
+		if(!words.isEmpty()) {
+			strReturn.append("The word " + wordAux + " was not found, did you mean: \n");
+			for (String word : words) {
+				strReturn.append(word + "\n");
+			}
 		}
-		return s;
+		else {
+			strReturn.append("The word " + wordAux + " was not found. \n");
+		}
+		return strReturn.toString();
 	}
 	
 	
-	public void levenshteinDistance2(List<String> words, Node node, String word, String wordAux) {
+	private void addWords(List<String> words, Node node, StringBuffer word, String wordAux) {
 		if(node.hasChildren()) {
 			if(word.length() - wordAux.length() <= 2) {
 				HashMap<Character, Node> children = node.getChildren();
 				for (Node value : children.values()) {
 					if(value.isEnd()) {
-						word = word.concat(Character.toString(value.getLetter()));
-						if(calculateDistance(wordAux, word) <= 2 && wordAux.length() - word.length() <= 2) {
-							words.add(word);
+						word.append(value.getLetter());
+						if(calculateDistance(wordAux, word.toString()) <= 2 && wordAux.length() - word.length() <= 2) {
+							words.add(word.toString());
 						}		
 					}
 					else if(value.hasChildren()) {
-						levenshteinDistance2(words, value, word.concat(Character.toString(value.getLetter())), wordAux);
+						addWords(words, value, word.append(value.getLetter()), wordAux);
 					}
 				}
 			}		
 		}
 	}
 
-	public static int calculateDistance(String a, String b) {
+	private static int calculateDistance(String a, String b) {
         a = a.toLowerCase();
         b = b.toLowerCase();
-        // i == 0
         int [] costs = new int [b.length() + 1];
         for (int j = 0; j < costs.length; j++)
             costs[j] = j;
         for (int i = 1; i <= a.length(); i++) {
-            // j == 0; nw = lev(i - 1, j)
             costs[0] = i;
             int nw = i - 1;
             for (int j = 1; j <= b.length(); j++) {

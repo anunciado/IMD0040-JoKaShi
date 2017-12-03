@@ -50,7 +50,7 @@ public class Main{
          
         catch(IOException ex)
         {
-        		JOptionPane.showMessageDialog(null, "trieFile.dat and baseFile.dat files not found, creating new ones");
+        	JOptionPane.showMessageDialog(null, "trieFile.dat and baseFile.dat files not found, creating new ones");
             trie = new Trie();
             base = new Base();
         }

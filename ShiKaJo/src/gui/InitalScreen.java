@@ -52,6 +52,7 @@ public class InitalScreen extends JFrame {
 	private String pathLastfileInput;
 	private String nameLastfileInput;
 	private String filesList;
+	private String wordsList;
 	private JRadioButton rdbtnAnd;
 	private JRadioButton rdbtnOr;
 	private IndexModule indexModule;
@@ -206,7 +207,16 @@ public class InitalScreen extends JFrame {
 		
 		btnWords.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				setWordsList(indexModule.getWords());
+				if(getWordsList().equals("")) {
+					JOptionPane.showMessageDialog(btnWords, "0 words in our database, add any first");
+				}
+				else {
+					//SecondScreen ss = new SecondScreen("Saved Words");
+					ss.setAddedWords(getWordsList());
+					ss.setTitle("Saved Words");
+					ss.setVisible(true);
+				}
 			}
 		});
 		
@@ -376,6 +386,22 @@ public class InitalScreen extends JFrame {
 	 */
 	public void setFilesList (String filesList ) {
 		this.filesList = filesList;
+	}
+	
+	/**
+	 * Shows a list with all words inserted
+	 * @return wordsList
+	 */
+	public String getWordsList() {
+		return wordsList;
+	}
+	
+	/**
+	 * Updates the list with all words inserted
+	 * @param wordsList updated words list
+	 */
+	public void setWordsList (String wordsList ) {
+		this.wordsList = wordsList;
 	}
 
 }

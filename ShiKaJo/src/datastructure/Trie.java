@@ -2,6 +2,7 @@ package datastructure;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -70,31 +71,31 @@ public class Trie implements Serializable {
         return null;
 	}
 	
-	public void show(Node node, String word) {
+	public void show(List <String> words, Node node, String word) {
 		if(node.hasChildren()) {
 			HashMap<Character, Node> children = node.getChildren();
 			for (Node value : children.values()) {
 				if(value.isEnd() && !value.getWords().isEmpty()) {
-					System.out.println(word + value.getLetter());
+					words.add(word + value.getLetter());
 				}
 				if(value.hasChildren()) {
-				  	show(value, word.concat(Character.toString(value.getLetter())));
+				  	show(words, value, word.concat(Character.toString(value.getLetter())));
 				}
 			}
 		}
 	}
 	
-	public void show() {
+	public void show(List <String> words) {
 		Node node = this.root;
 		String word = "";
 		if(node.hasChildren()) {
 			HashMap<Character, Node> children = node.getChildren();
 			for (Node value : children.values()) {
 				if(value.isEnd()) {
-				 	System.out.println(word + value.getLetter());
+					words.add(word + value.getLetter());
 				}
 				if(value.hasChildren()) {
-				  	show(value, word.concat(Character.toString(value.getLetter())));
+				  	show(words, value, word.concat(Character.toString(value.getLetter())));
 				}
 			}
 		}
