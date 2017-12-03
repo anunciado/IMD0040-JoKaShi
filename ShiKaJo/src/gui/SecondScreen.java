@@ -34,7 +34,7 @@ public class SecondScreen extends JFrame {
 		setLocation(700, 10);
 		setSize(500, 375);
 		
-		JLabel lblNewLabel = new JLabel("Infos:");
+		JLabel lblNewLabel = new JLabel("Files information");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Segoe UI Black", Font.BOLD, 13));
 		
@@ -83,8 +83,8 @@ public class SecondScreen extends JFrame {
 	 * add all the infos about the keyword inserted in the search bar
 	 * @param keyWord
 	 */
-	public void setKeyWord (String keyWord, String time) {
-		txtrTeste.setText("Execution time is: " + time + " seconds\n" + keyWord);
+	public void setKeyWord (String type,String keyWord, String time) {
+		txtrTeste.setText("Search mode: " + type + ", execution time is: " + time + " seconds\n" + keyWord);
 		scrollPane.setViewportView(txtrTeste);
 	}
 	

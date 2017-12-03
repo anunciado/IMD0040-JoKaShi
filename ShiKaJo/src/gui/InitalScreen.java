@@ -46,6 +46,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JRadioButton;
 
 public class InitalScreen extends JFrame {
+	
 	private static final long serialVersionUID = 1L;
 	private String searchText;
 	private String pathLastfileInput;
@@ -53,29 +54,29 @@ public class InitalScreen extends JFrame {
 	private String filesList;
 	private JRadioButton rdbtnAnd;
 	private JRadioButton rdbtnOr;
-	Trie trie = null;
-    Base base = null;
 	private IndexModule indexModule;
 	private SearchModule searchModule;
 	private SecondScreen ss;
 	
 	
-	public InitalScreen (IndexModule indexModule, SearchModule searchModule, Trie trie, Base base) {
-		this.indexModule = indexModule;
-		this.searchModule = searchModule;
-		this.trie = trie;
-		this.base = base;
+	public InitalScreen (Trie trie, Base base) {
+		
+		this.indexModule = new IndexModule(trie, base);
+		this.searchModule = new SearchModule(trie, base);
 		ss = new SecondScreen();
 		ss.setVisible(false);
 		pathLastfileInput = "";
-		setTitle("InitalScreen");
+		setTitle("JoKaShi Search Engine");
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// When the main window is closed, it does the serialization of the database and the trie
 		addWindowListener(new WindowAdapter() {
 	        @Override
 	        public void windowClosing(WindowEvent event) {
 	        	try
 	            {   
-	            	//Saving of object in a file
+	            		//Saving of object in a file
 	                FileOutputStream file1 = new FileOutputStream("load/trieFile.dat");
 	                ObjectOutputStream out1 = new ObjectOutputStream(file1);
 	                //Saving of object in a file
@@ -103,21 +104,11 @@ public class InitalScreen extends JFrame {
 		ButtonGroup radioGroup = new ButtonGroup();
 		
 		rdbtnAnd = new JRadioButton("and");
-		rdbtnAnd.setSelected(true);
+		rdbtnAnd.setSelected(true); //Sets the default search option to "AND"      
 		rdbtnOr = new JRadioButton("or");
 		
 		radioGroup.add(rdbtnAnd);
-		radioGroup.add(rdbtnOr);
-		
-//		Jframe jf = new JFrame();
-//		String[] options = new String[2];
-//        options[0] = new String("Yes");
-//        options[1] = new String("No");
-//        int answer = JOptionPane.showOptionDialog(jf,"Do you wish get out of the system?", "Resume", 0, JOptionPane.QUESTION_MESSAGE, null, options, null);
-//        if(answer == JOptionPane.CLOSED_OPTION) System.exit(0);
-//        if(answer == JOptionPane.YES_OPTION) {
-//        	
-//        }     
+		radioGroup.add(rdbtnOr);   
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -128,7 +119,7 @@ public class InitalScreen extends JFrame {
 		openButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser fileChooser = new JFileChooser();
-			    FileNameExtensionFilter filter = new FileNameExtensionFilter(".txt", "txt");
+			    FileNameExtensionFilter filter = new FileNameExtensionFilter(".txt", "txt"); //Filter to read only .txt files
 			    fileChooser.setFileFilter(filter);
 				int returnVal = fileChooser.showOpenDialog(null);
 				
@@ -231,7 +222,7 @@ public class InitalScreen extends JFrame {
 			
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String file = JOptionPane.showInputDialog(btnDelete, "Name of the file you want to remove(ex: test.txt):");
+				String file = JOptionPane.showInputDialog(btnDelete, "Name of the file you want to remove (ex: file.txt)");
 				if(file != null) {
 					JOptionPane.showMessageDialog(btnDelete, indexModule.remove(file));
 				}
@@ -285,7 +276,7 @@ public class InitalScreen extends JFrame {
 						String occurrence = searchModule.search(searchText, "and");
 						endTime = System.currentTimeMillis();
 						String time = formatter.format((endTime - startTime) / 1000d);
-						ss.setKeyWord(occurrence, time);
+						ss.setKeyWord("AND",occurrence, time);
 						ss.setTitle("Result of Search");
 						ss.setVisible(true);
 					}
@@ -294,7 +285,7 @@ public class InitalScreen extends JFrame {
 						String occurrence = searchModule.search(searchText, "or");
 						endTime = System.currentTimeMillis();
 						String time = formatter.format((endTime - startTime) / 1000d);
-						ss.setKeyWord(occurrence, time);
+						ss.setKeyWord("OR",occurrence, time);
 						ss.setTitle("Result of Search");
 						ss.setVisible(true);
 					}
