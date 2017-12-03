@@ -49,7 +49,7 @@ public class SearchModule {
 			wordAux = wordAux.replaceAll(" " , "");
 			wordAux = Normalizer.normalize(word, Normalizer.Form.NFD);
 			wordAux = wordAux.replaceAll("[^\\p{ASCII}]", "").toLowerCase();
-			wordAux = wordAux.replaceAll("[-|_.,]+","");
+			wordAux = wordAux.replaceAll("[-|_.,()]+","");
 			wordAux = wordAux.replaceAll("\\{!-@\\}\\{[-]\\}","");
 		}
 		

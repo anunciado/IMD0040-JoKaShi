@@ -57,6 +57,7 @@ public class InitalScreen extends JFrame {
     Base base = null;
 	private IndexModule indexModule;
 	private SearchModule searchModule;
+	private SecondScreen ss;
 	
 	
 	public InitalScreen (IndexModule indexModule, SearchModule searchModule, Trie trie, Base base) {
@@ -64,6 +65,8 @@ public class InitalScreen extends JFrame {
 		this.searchModule = searchModule;
 		this.trie = trie;
 		this.base = base;
+		ss = new SecondScreen();
+		ss.setVisible(false);
 		pathLastfileInput = "";
 		setTitle("InitalScreen");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -188,8 +191,10 @@ public class InitalScreen extends JFrame {
 					JOptionPane.showMessageDialog(btnArchives, "0 files in our database, add any first");
 				}
 				else {
-					SecondScreen ss = new SecondScreen("Saved Files");
+					//SecondScreen ss = new SecondScreen("Saved Files");
 					ss.setAddedFiles(getFilesList());
+					ss.setTitle("Saved Files");
+					ss.setVisible(true);
 				}
 			}
 		});
@@ -227,7 +232,9 @@ public class InitalScreen extends JFrame {
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String file = JOptionPane.showInputDialog(btnDelete, "Name of the file you want to remove(ex: test.txt):");
-				JOptionPane.showMessageDialog(btnDelete, indexModule.remove(file));
+				if(file != null) {
+					JOptionPane.showMessageDialog(btnDelete, indexModule.remove(file));
+				}
 			}
 		});
 		
@@ -271,7 +278,7 @@ public class InitalScreen extends JFrame {
 				}
 				else {
 					searchTextField.setText("");
-					SecondScreen ss = new SecondScreen("Result of search: ");
+					//SecondScreen ss = new SecondScreen("Result of search: ");
 					boolean option = rdbtnAnd.isSelected();
 					if(option) {
 						startTime = System.currentTimeMillis();
@@ -279,6 +286,8 @@ public class InitalScreen extends JFrame {
 						endTime = System.currentTimeMillis();
 						String time = formatter.format((endTime - startTime) / 1000d);
 						ss.setKeyWord(occurrence, time);
+						ss.setTitle("Result of Search");
+						ss.setVisible(true);
 					}
 					else {
 						startTime = System.currentTimeMillis();
@@ -286,6 +295,8 @@ public class InitalScreen extends JFrame {
 						endTime = System.currentTimeMillis();
 						String time = formatter.format((endTime - startTime) / 1000d);
 						ss.setKeyWord(occurrence, time);
+						ss.setTitle("Result of Search");
+						ss.setVisible(true);
 					}
 				}
 			}

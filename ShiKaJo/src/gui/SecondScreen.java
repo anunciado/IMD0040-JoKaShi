@@ -29,13 +29,12 @@ public class SecondScreen extends JFrame {
 		JScrollPane scrollPane = new JScrollPane();
 		JTextArea txtrTeste = new JTextArea();
 	
-	public SecondScreen (String labelTitle) {
-		setTitle("SecondScreen");
+	public SecondScreen () {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setLocation(700, 10);
 		setSize(500, 375);
 		
-		JLabel lblNewLabel = new JLabel(labelTitle);
+		JLabel lblNewLabel = new JLabel("Infos:");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Segoe UI Black", Font.BOLD, 13));
 		
@@ -88,4 +87,5 @@ public class SecondScreen extends JFrame {
 		txtrTeste.setText("Execution time is: " + time + " seconds\n" + keyWord);
 		scrollPane.setViewportView(txtrTeste);
 	}
+	
 }
