@@ -89,11 +89,13 @@ public class InitalScreen extends JFrame {
 	                file1.close();
 	                out2.close();
 	                file2.close();
-	                System.out.println("Base and trie has been serialized");
+	                JOptionPane.showMessageDialog(null, "Base and trie has been serialized");
+	                //System.out.println("Base and trie has been serialized");
 	            }     
 	            catch(IOException ex)
 	            {
-	                System.out.println("IOException is caught");
+	            		JOptionPane.showMessageDialog(null, ex.getMessage());
+	                //System.out.println("IOException is caught");
 	            }
 	        }
 	    });

@@ -30,7 +30,7 @@ public class IndexModule {
 			location = location.substring(location.lastIndexOf("/") + 1);
 			if (base.containsKey(location)){
 				message = "File already added!";
-				System.err.println(message);
+				//System.err.println(message);
 			}
 			else {
 				// Open the file that is the first 
@@ -65,7 +65,7 @@ public class IndexModule {
 		}
 		catch (Exception e){//Catch exception if any
 			message = "Error: " + e.getMessage();
-			System.err.println(message);
+			//System.err.println(message);
 		}
 		return message;
 	}
@@ -81,7 +81,7 @@ public class IndexModule {
 		}
 		else {
 			message = "File not added!";
-			System.err.println(message);
+			//System.err.println(message);
 		}
 		return message;
 	}
@@ -94,7 +94,7 @@ public class IndexModule {
 		}
 		else {
 			message = "File not added!";
-			System.err.println(message);
+			//System.err.println(message);
 		}
 		
 		return message;

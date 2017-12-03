@@ -11,6 +11,7 @@ import java.text.NumberFormat;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import javax.swing.JOptionPane;
 
 import database.Base;
 import datastructure.Trie;
@@ -49,14 +50,14 @@ public class Main{
          
         catch(IOException ex)
         {
-			System.err.println(ex.getMessage());
+        		JOptionPane.showMessageDialog(null, "trieFile.dat and baseFile.dat files not found, creating new ones");
             trie = new Trie();
             base = new Base();
         }
          
         catch(ClassNotFoundException ex)
         {
-            System.out.println("ClassNotFoundException is caught");
+        		JOptionPane.showMessageDialog(null, ex.getMessage());
         }
         
         InitalScreen screen = new InitalScreen(trie, base);
