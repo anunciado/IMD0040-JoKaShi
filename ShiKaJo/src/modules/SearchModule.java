@@ -20,6 +20,13 @@ import database.Stats;
 import datastructure.Node;
 import datastructure.Trie;
 
+/**
+ * 
+ * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
+ * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
+ * @author 	João Paulo 	  ()
+ * @version 04.12.2017
+ */
 public class SearchModule {
 	private Trie trie;
 	private Base base;

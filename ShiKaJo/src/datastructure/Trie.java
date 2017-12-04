@@ -7,6 +7,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
+/**
+ * Class that implementes a trie
+ * 
+ * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
+ * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
+ * @author 	João Paulo 	  ()
+ * @version 04.12.2017
+ */
 public class Trie implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

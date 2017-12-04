@@ -45,6 +45,13 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JRadioButton;
 
+/**
+ * 
+ * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
+ * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
+ * @author 	João Paulo 	  ()
+ * @version 04.12.2017
+ */
 public class InitalScreen extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
@@ -102,7 +109,7 @@ public class InitalScreen extends JFrame {
 	    });
 		
 		setLocation(100, 50);
-		setSize(500, 400);
+		setSize(550, 400);
 		
 		ButtonGroup radioGroup = new ButtonGroup();
 		
@@ -116,7 +123,7 @@ public class InitalScreen extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 		
-// OPEN FILE BUTTON
+		// OPEN FILE BUTTON
 		JButton openButton = new JButton("Open");
 		
 		openButton.addActionListener(new ActionListener() {

@@ -18,9 +18,14 @@ import datastructure.Trie;
 import modules.IndexModule;
 import modules.SearchModule;
 
-/* Class Trie Test */
-
-public class Main{
+/**
+ * 
+ * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
+ * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
+ * @author 	João Paulo 	  ()
+ * @version 04.12.2017
+ */
+public class Main {
 
 	public static void main(String[] args) throws  InputMismatchException {            
 

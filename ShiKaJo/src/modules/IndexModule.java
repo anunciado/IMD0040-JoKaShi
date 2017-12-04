@@ -15,6 +15,13 @@ import java.util.HashSet;
 import database.Base;
 import datastructure.Trie;
 
+/**
+ * 
+ * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
+ * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
+ * @author 	João Paulo 	  ()
+ * @version 04.12.2017
+ */
 public class IndexModule {
 	private Trie trie;
 	private Base base;
