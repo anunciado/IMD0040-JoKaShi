@@ -2,14 +2,12 @@ package gui;
 
 import javax.swing.JFrame;
 import modules.*;
-import database.*;
 
 import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 
 import java.awt.Panel;
 import javax.swing.JTextField;
-import javax.swing.JMenu;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
@@ -25,7 +23,6 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
-import javax.swing.UIManager;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import database.Base;
@@ -46,15 +43,17 @@ import java.awt.event.WindowEvent;
 import javax.swing.JRadioButton;
 
 /**
- * 
+ * This class represents the initial screen. It's responsible to do the search and 
+ * other things that can be see in the execution 
+ *  
  * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
  * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
  * @author 	João Paulo 	  (vilarjp93@gmail.com)
  * @version 04.12.2017
  */
 public class InitalScreen extends JFrame {
-	
 	private static final long serialVersionUID = 1L;
+	
 	private String searchText;
 	private String pathLastfileInput;
 	private String nameLastfileInput;
@@ -66,7 +65,11 @@ public class InitalScreen extends JFrame {
 	private SearchModule searchModule;
 	private SecondScreen ss;
 	
-	
+	/**
+	 * The constructor of the InitalScreen class
+	 * @param 	trie	The trie
+	 * @param 	base	The base
+	 */
 	public InitalScreen (Trie trie, Base base) {
 		
 		this.indexModule = new IndexModule(trie, base);

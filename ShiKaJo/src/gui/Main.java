@@ -1,24 +1,17 @@
 package gui;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.InputMismatchException;
-import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
 import database.Base;
 import datastructure.Trie;
-import modules.IndexModule;
-import modules.SearchModule;
 
 /**
+ * This class is principal class. It's responsible for call the main classes
  * 
  * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
  * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
@@ -26,15 +19,18 @@ import modules.SearchModule;
  * @version 04.12.2017
  */
 public class Main {
-
+	/**
+	 * The main method
+	 * @param 	args
+	 * @throws 	InputMismatchException
+	 */
 	public static void main(String[] args) throws  InputMismatchException {            
 
 		Trie trie = null;
         Base base = null;
         
 		// Deserialization
-        try
-        {   
+        try {   
             // Reading the object from a file
             FileInputStream file1 = new FileInputStream("load/trieFile.dat");
             ObjectInputStream in1 = new ObjectInputStream(file1);
@@ -51,17 +47,11 @@ public class Main {
             file1.close();
             in2.close();
             file2.close();
-        }
-         
-        catch(IOException ex)
-        {
+        } catch(IOException ex) {
         	JOptionPane.showMessageDialog(null, "trieFile.dat and baseFile.dat files not found, creating new ones");
             trie = new Trie();
             base = new Base();
-        }
-         
-        catch(ClassNotFoundException ex)
-        {
+        } catch(ClassNotFoundException ex) {
         		JOptionPane.showMessageDialog(null, ex.getMessage());
         }
         
