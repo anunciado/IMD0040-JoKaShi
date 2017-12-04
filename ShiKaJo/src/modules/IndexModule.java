@@ -27,21 +27,15 @@ public class IndexModule {
 	
 	public String index(String location) {
 		try{
-			location = location.substring(location.lastIndexOf("/") + 1);
-			if (base.containsKey(location)){
+			if (base.containsKey(location.substring(location.lastIndexOf("/") + 1))){
 				message = "File already added!";
-				//System.err.println(message);
 			}
 			else {
-				// Open the file that is the first 
-				// command line parameter
 				FileInputStream fstream = new FileInputStream(location);
-				// Get the object of DataInputStream
 				DataInputStream in = new DataInputStream(fstream);
 				BufferedReader br = new BufferedReader(new InputStreamReader(in));
 				Set <String> auxiliar = new HashSet<String>();
 				String strLine;
-				//Read File Line By Line
 				for (int i = 1; (strLine = br.readLine()) != null; i++) {
 					List<String> words = new ArrayList<String>(Arrays.asList(strLine.split(" ")));
 					for (String word: words) {
@@ -53,19 +47,17 @@ public class IndexModule {
 						result = result.replaceAll("[^\\p{ASCII}]", "").toLowerCase();
 						result = result.replaceAll("[-|_.,()';\"]+","");
 						result = result.replaceAll("\\{!-@\\}\\{[-]\\}","");
-						this.trie.insert(result, location, i);
+						this.trie.insert(result, location.substring(location.lastIndexOf("/") + 1), i);
 						auxiliar.add(result);
 					}
 				}
-				base.put(location, auxiliar);
-				//Close the input stream
+				base.put(location.substring(location.lastIndexOf("/") + 1), auxiliar);
 				in.close();
 				message = "File uploaded successfully";
 			} 
 		}
-		catch (Exception e){//Catch exception if any
+		catch (Exception e){
 			message = "Error: " + e.getMessage();
-			//System.err.println(message);
 		}
 		return message;
 	}
@@ -81,7 +73,6 @@ public class IndexModule {
 		}
 		else {
 			message = "File not added!";
-			//System.err.println(message);
 		}
 		return message;
 	}
@@ -94,7 +85,6 @@ public class IndexModule {
 		}
 		else {
 			message = "File not added!";
-			//System.err.println(message);
 		}
 		
 		return message;

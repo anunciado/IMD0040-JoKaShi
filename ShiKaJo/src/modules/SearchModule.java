@@ -44,16 +44,21 @@ public class SearchModule {
 	public void setBase(Base base) {
 		this.base = base;
 	}
-
 	public String search(String word, String mode) {
-		List<String> words = new ArrayList<String>(Arrays.asList(word.split(" ")));
-		for (String wordAux: words) {
-			wordAux = wordAux.replaceAll(" " , "");
-			wordAux = Normalizer.normalize(word, Normalizer.Form.NFD);
-			wordAux = wordAux.replaceAll("[^\\p{ASCII}]", "").toLowerCase();
-			wordAux = wordAux.replaceAll("[-|_.,()';\"]+","");
-			wordAux = wordAux.replaceAll("\\{!-@\\}\\{[-]\\}","");
-		}	
+		List<String> wordsAux = new ArrayList<String>(Arrays.asList(word.split(" ")));
+		System.out.println(wordsAux);
+		List<String> wordsAux2 = new ArrayList<String>();
+		for (String result: wordsAux) {
+			result = result.replaceAll(" " , "");
+			result = Normalizer.normalize(result, Normalizer.Form.NFD);
+			result = result.replaceAll("[^\\p{ASCII}]", "").toLowerCase();
+			result = result.replaceAll("[-|_.,()';\"]+","");
+			result = result.replaceAll("\\{!-@\\}\\{[-]\\}","");
+			System.out.println(result);
+			wordsAux2.add(result);
+		}
+		List<String> words = new ArrayList<String>(new HashSet<String>(wordsAux2));
+		System.out.println(words);
 		Map<String, List<String>> map = new HashMap<String, List<String>>();
 		StringBuffer strLevenshteinDistance = new StringBuffer();
 		for (String wordAux: words) {
@@ -142,7 +147,7 @@ public class SearchModule {
 		for (Node value : trie.getRoot().getChildren().values()) {
 			StringBuffer word = new StringBuffer();
 			word.append(value.getLetter());
-			addWords(words, value, word, wordAux);
+			addWords(words, value, word, wordAux, 5);
 		}
 		StringBuffer strReturn = new StringBuffer();
 		if(!words.isEmpty()) {
@@ -158,19 +163,19 @@ public class SearchModule {
 	}
 	
 	
-	private void addWords(List<String> words, Node node, StringBuffer word, String wordAux) {
+	private void addWords(List<String> words, Node node, StringBuffer word, String wordAux, int score) {
 		if(node.hasChildren()) {
-			if(word.length() - wordAux.length() <= 2) {
+			if(word.length() - wordAux.length() <= score) {
 				HashMap<Character, Node> children = node.getChildren();
 				for (Node value : children.values()) {
 					if(value.isEnd()) {
 						word.append(value.getLetter());
-						if(calculateDistance(wordAux, word.toString()) <= 2 && wordAux.length() - word.length() <= 2) {
+						if(calculateDistance(wordAux, word.toString()) <= score && wordAux.length() - word.length() <= score) {
 							words.add(word.toString());
 						}		
 					}
 					else if(value.hasChildren()) {
-						addWords(words, value, word.append(value.getLetter()), wordAux);
+						addWords(words, value, word.append(value.getLetter()), wordAux, score);
 					}
 				}
 			}		
