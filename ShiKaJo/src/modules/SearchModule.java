@@ -25,7 +25,7 @@ import datastructure.Trie;
  * 
  * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
  * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
- * @author 	João Paulo 	  (vilarjp93@gmail.com)
+ * @author 	Joï¿½o Paulo 	  (vilarjp93@gmail.com)
  * @version 04.12.2017
  */
 public class SearchModule {
@@ -73,8 +73,6 @@ public class SearchModule {
 	public void setBase(Base base) {
 		this.base = base;
 	}
-<<<<<<< HEAD
-=======
 
 	/**
 	 * Return the result of the search 
@@ -82,10 +80,9 @@ public class SearchModule {
 	 * @param 	mode	The mode
 	 * @return	the result 
 	 */
->>>>>>> 5ffccf87d7fe8c09d8ef445231522747b42de941
+
 	public String search(String word, String mode) {
 		List<String> wordsAux = new ArrayList<String>(Arrays.asList(word.split(" ")));
-		System.out.println(wordsAux);
 		List<String> wordsAux2 = new ArrayList<String>();
 		for (String result: wordsAux) {
 			result = result.replaceAll(" " , "");
@@ -93,11 +90,9 @@ public class SearchModule {
 			result = result.replaceAll("[^\\p{ASCII}]", "").toLowerCase();
 			result = result.replaceAll("[-|_.,()';\"]+","");
 			result = result.replaceAll("\\{!-@\\}\\{[-]\\}","");
-			System.out.println(result);
 			wordsAux2.add(result);
 		}
 		List<String> words = new ArrayList<String>(new HashSet<String>(wordsAux2));
-		System.out.println(words);
 		Map<String, List<String>> map = new HashMap<String, List<String>>();
 		StringBuffer strLevenshteinDistance = new StringBuffer();
 		for (String wordAux: words) {
@@ -227,10 +222,6 @@ public class SearchModule {
 		return strReturn.toString();
 	}
 	
-<<<<<<< HEAD
-	
-	private void addWords(List<String> words, Node node, StringBuffer word, String wordAux, int score) {
-=======
 	/**
 	 * Method responsible for search all the words based in a score.
 	 * @param words 	The words
@@ -238,8 +229,7 @@ public class SearchModule {
 	 * @param word		The word
 	 * @param wordAux	The auxiliary word
 	 */
-	private void addWords(List<String> words, Node node, StringBuffer word, String wordAux) {
->>>>>>> 5ffccf87d7fe8c09d8ef445231522747b42de941
+	private void addWords(List<String> words, Node node, StringBuffer word, String wordAux, int score) {
 		if(node.hasChildren()) {
 			if(word.length() - wordAux.length() <= score) {
 				HashMap<Character, Node> children = node.getChildren();
