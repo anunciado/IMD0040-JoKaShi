@@ -19,7 +19,7 @@ import datastructure.Trie;
  * 
  * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
  * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
- * @author 	João Paulo 	  ()
+ * @author 	João Paulo 	  (vilarjp93@gmail.com)
  * @version 04.12.2017
  */
 public class IndexModule {
