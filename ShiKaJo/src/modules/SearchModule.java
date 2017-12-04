@@ -21,6 +21,7 @@ import datastructure.Node;
 import datastructure.Trie;
 
 /**
+ * This class is search module. Its fields are: trie and base.
  * 
  * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
  * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
@@ -31,27 +32,54 @@ public class SearchModule {
 	private Trie trie;
 	private Base base;
 	
-	public SearchModule(Trie trie, Base base) {
+	/**
+	 * The constructor of the search module class
+	 * @param 	trie 	The trie 
+	 * @param 	base	The base
+	 */
+	public SearchModule (Trie trie, Base base) {
 		this.setTrie(trie);
 		this.setBase(base); 
 	}
-
-	public Trie getTrie() {
+	
+	/**
+	 * Return the trie of this class
+	 * @return 	trie 	The trie
+	 */
+	public Trie getTrie () {
 		return trie;
 	}
 
+	/**
+	 * Change the trie of this class
+	 * @param 	trie 	The trie
+	 */
 	public void setTrie(Trie trie) {
 		this.trie = trie;
 	}
 	
+	/**
+	 * Return the base of this class
+	 * @return	base 	The base
+	 */
 	public Base getBase() {
 		return base;
 	}
 
+	/**
+	 * Change the base of this class
+	 * @param 	base	The base
+	 */
 	public void setBase(Base base) {
 		this.base = base;
 	}
 
+	/**
+	 * Return the result of the search 
+	 * @param 	word	The word
+	 * @param 	mode	The mode
+	 * @return	the result 
+	 */
 	public String search(String word, String mode) {
 		List<String> words = new ArrayList<String>(Arrays.asList(word.split(" ")));
 		for (String wordAux: words) {
@@ -84,6 +112,15 @@ public class SearchModule {
 		return strReturn.toString();	
 	}
 	
+	/**
+	 * This method transform the node in a Stats set, and convert this set 
+	 * to a string  
+	 * @param words 	The words
+	 * @param map		The map		
+	 * @param map2		The second mep
+	 * @param wordAux	The auxiliary word
+	 * @param mode		The mode string 
+	 */
 	private void transformNode(List<String> words, Map<String, List<String>> map, Map <String, Stats> map2, String wordAux, String mode) {
 		for (Map.Entry <String, Stats > entry : map2.entrySet()) {
 			List<String> arraylist = new ArrayList<String>();
@@ -107,6 +144,13 @@ public class SearchModule {
 		}
 	}
 	
+	/**
+	 * Transform the stats class in strings that will be print in the interface
+	 * @param arraylist		The array list
+	 * @param stats			The stats
+	 * @param file			The file
+	 * @param wordAux		The auxiliary word
+	 */
 	private void transformStats(List<String> arraylist, Stats stats, String file, String wordAux){
 		Map<Integer,Integer> lines = stats.getLines();
 		for (Map.Entry<Integer, Integer> entry2 : lines.entrySet()) {
@@ -116,6 +160,11 @@ public class SearchModule {
 		}
 	}
 
+	/**
+	 * Method responsible for sort the archives according with the lines amount 
+	 * @param 	treeMap		The tree map
+	 * @return 	The sort map
+	 */
 	private Map<String, List<String>> sort(Map<String, List<String>> treeMap){
 		Map<String, List<String>> map = new TreeMap<String, List<String>>(treeMap);
         List<Map.Entry<String, List<String>>> entries = new LinkedList<Map.Entry<String, List<String>>>(map.entrySet());
@@ -144,6 +193,11 @@ public class SearchModule {
         return sortedMap;
     }
 	
+	/**
+	 * Method that receive a word and search for similar words
+	 * @param 	wordAux 	A auxiliary word
+	 * @return	The string with the similar words
+	 */
 	private String levenshteinDistance(String wordAux) {
 		List <String> words = new ArrayList <String>();
 		for (Node value : trie.getRoot().getChildren().values()) {
@@ -164,7 +218,13 @@ public class SearchModule {
 		return strReturn.toString();
 	}
 	
-	
+	/**
+	 * Method responsible for search all the words based in a score.
+	 * @param words 	The words
+	 * @param node		The node
+	 * @param word		The word
+	 * @param wordAux	The auxiliary word
+	 */
 	private void addWords(List<String> words, Node node, StringBuffer word, String wordAux) {
 		if(node.hasChildren()) {
 			if(word.length() - wordAux.length() <= 2) {
@@ -184,6 +244,12 @@ public class SearchModule {
 		}
 	}
 
+	/**
+	 * Method responsible for calculate the distance
+	 * @param 	a	The string to compare
+	 * @param 	b	The string to compare
+	 * @return the distance between the word
+	 */
 	private static int calculateDistance(String a, String b) {
         a = a.toLowerCase();
         b = b.toLowerCase();

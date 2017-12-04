@@ -16,6 +16,8 @@ import database.Base;
 import datastructure.Trie;
 
 /**
+ * This class represents the indexing module. The fields of this class are:
+ * a trie, a base and a message string.
  * 
  * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
  * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
@@ -27,12 +29,22 @@ public class IndexModule {
 	private Base base;
 	private String message;
 	
-	public IndexModule(Trie trie, Base base) {
+	/**
+	 * The constructor of the IndexModule class
+	 * @param 	trie 	The trie
+	 * @param 	base 	The base
+	 */
+	public IndexModule (Trie trie, Base base) {
 		this.setTrie(trie);
 		this.setBase(base);
 	}
 	
-	public String index(String location) {
+	/**
+	 * Method responsible for get the words and insert in the trie
+	 * @param 	location 	String
+	 * @return	message 	The message
+	 */
+	public String index (String location) {
 		try{
 			location = location.substring(location.lastIndexOf("/") + 1);
 			if (base.containsKey(location)){
@@ -77,7 +89,12 @@ public class IndexModule {
 		return message;
 	}
 	
-	public String remove(String file) {
+	/**
+	 * Remove the objects related to a file  
+	 * @param 	file 		The file
+	 * @return 	message 	The message
+	 */
+	public String remove (String file) {
 		file = file.substring(file.lastIndexOf("/") + 1);
 		this.show();
 		if (base.containsKey(file)){
@@ -93,45 +110,75 @@ public class IndexModule {
 		return message;
 	}
 	
-	public String update(String location) {
+	/**
+	 * Update the objects related to a file
+	 * @param 		location 	The location
+	 * @return		message 	The message
+	 */
+	public String update (String location) {
 		if (base.containsKey(location.substring(location.lastIndexOf("/") + 1))){
 			this.remove(location);
 			this.index(location);
 			message = "File updated successfully";
-		}
-		else {
+		} else {
 			message = "File not added!";
 			//System.err.println(message);
 		}
 		
 		return message;
-		
 	}
 	
+	/**
+	 * Gets the trie
+	 * @return 	trie 	The trie
+	 */
 	public Trie getTrie() {
 		return trie;
 	}
 
+	/**
+	 * Change the trie
+	 * @param 	trie 	The trie
+	 */
 	public void setTrie(Trie trie) {
 		this.trie = trie;
 	}
 
+	/**
+	 * Returns the base of this class
+	 * @return 	base 	The base
+	 */
 	public Base show() {
 		return this.base;
 	}
 
+	/**
+	 * Return the base of this class
+	 * @return 	base 	The base
+	 */
 	public Base getBase() {
 		return base;
 	}
 
+	/**
+	 * Change the base value of this class
+	 * @param 	base 	The base
+	 */
 	public void setBase(Base base) {
 		this.base = base;
 	}
 	
+	/**
+	 * Convert this class to string
+	 */
 	public String toString() {
 		return base.toString();
 	}
 
+	/**
+	 * Return the words indexed
+	 * @return 	words 	The words
+	 */
 	public String getWords() {
 		List <String> words = new ArrayList <String>();
 		trie.show(words);
@@ -141,5 +188,4 @@ public class IndexModule {
 		}
 		return strReturn.toString();
 	}
-
 }

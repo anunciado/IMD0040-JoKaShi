@@ -24,7 +24,7 @@ public class Main {
 	 * @param 	args
 	 * @throws 	InputMismatchException
 	 */
-	public static void main(String[] args) throws  InputMismatchException {            
+	public static void main (String[] args) throws  InputMismatchException {            
 
 		Trie trie = null;
         Base base = null;
@@ -56,7 +56,6 @@ public class Main {
         }
         
         InitalScreen screen = new InitalScreen(trie, base);
- 
     }
 }
 
