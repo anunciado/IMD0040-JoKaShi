@@ -2,33 +2,33 @@ package gui;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import java.awt.BorderLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Font;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 import javax.swing.SwingConstants;
-import javax.swing.JPanel;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import java.awt.FlowLayout;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.JScrollBar;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
 import javax.swing.JScrollPane;
-import javax.swing.JTextPane;
-import javax.swing.ScrollPaneConstants;
 
+/**
+ * The SecondScreen is the class that show the results of the search made 
+ * in the FirstScreen 
+ * 
+ * @author 	Shirley Ohara (shirleyohara@ufrn.edu.br)
+ * @author 	Luis Eduardo  (cruxiu@ufrn.edu.br)
+ * @author 	João Paulo 	  (vilarjp93@gmail.com)
+ * @version 04.12.2017
+ */
 public class SecondScreen extends JFrame {
+	private static final long serialVersionUID = 1L;
 	
-		JScrollPane scrollPane = new JScrollPane();
-		JTextArea txtrTeste = new JTextArea();
-	
+	JScrollPane scrollPane = new JScrollPane();
+	JTextArea txtrTeste = new JTextArea();
+
+	/**
+	 * The constructor of the second screen
+	 */
 	public SecondScreen () {
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setLocation(700, 10);
@@ -44,11 +44,11 @@ public class SecondScreen extends JFrame {
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(189)
-					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+					.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 					.addGap(174))
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGap(29)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 443, GroupLayout.PREFERRED_SIZE)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 427, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(28, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
@@ -58,7 +58,7 @@ public class SecondScreen extends JFrame {
 					.addComponent(lblNewLabel)
 					.addGap(18)
 					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 271, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(68, Short.MAX_VALUE))
+					.addContainerGap(18, Short.MAX_VALUE))
 		);
 		
 		
@@ -79,6 +79,10 @@ public class SecondScreen extends JFrame {
 		scrollPane.setViewportView(txtrTeste);
 	}
 	
+	/**
+	 * Change the words added
+	 * @param 	wordsList 	The words list
+	 */
 	public void setAddedWords(String wordsList) {
 		txtrTeste.setText(wordsList);
 		scrollPane.setViewportView(txtrTeste);	
@@ -91,6 +95,5 @@ public class SecondScreen extends JFrame {
 	public void setKeyWord (String type,String keyWord, String time) {
 		txtrTeste.setText("Search mode: " + type + ", execution time is: " + time + " seconds\n" + keyWord);
 		scrollPane.setViewportView(txtrTeste);
-	}
-	
+	}	
 }
