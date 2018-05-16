@@ -26,6 +26,7 @@ $ java gui.Main
 3. From this it only interacts with the system.
 
 With, a window, like below, will appear:
+
 ![Example](/images/example.png)
 
 In the tab "Open", you can add all words of .txt file. In the tab "Update", you can update the words inside a .txt file already added. In the tab "Saved files", you can see all .txt files added. In the tab "Saved words", you can see all words inside all .txt files added. Finally, in the tab "Delete files", you can see all .txt files removed.
