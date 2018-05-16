@@ -1,88 +1,49 @@
-# JoKaShi​
+# JoKaShi
 
 An indexed search engine for organizing files on a computer, similar to a search engine.
 
-## Getting Started
+### Running
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+There are two ways to run this software:
 
-### Prerequisites
-
-What things you need to install the software and how to install them
-
+* Compile the IDE (Eclipse - Java IDE):
+1. Just open the IDE
+2. Import the project folder as a Java Project
+3. From this, just click on the right button in the Main class that is inside the package gui and follow the following steps
 ```
-Give examples
-```
-
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
-```
-Give the example
+$ Run As -> 2 Java Application
 ```
 
-And repeat
-
+* Compile by terminal:
+1. Enter the src folder and compile all the .java files with the following command:
 ```
-until finished
+$ java * .java -d <target_address_name>
 ```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
+2. Enter the chosen destination directory and run the following command:
 ```
-Give an example
+$ java gui.Main
 ```
+3. From this it only interacts with the system.
 
-### And coding style tests
+With, a window, like below, will appear:
+![Example](/images/example.png)
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+In the tab "Open", you can add all words of .txt file. In the tab "Update", you can update the words inside a .txt file already added. In the tab "Saved files", you can see all .txt files added. In the tab "Saved words", you can see all words inside all .txt files added. Finally, in the tab "Delete files", you can see all .txt files removed.
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+* [Eclipse](https://www.eclipse.org/) - A IDE used
 
 ## Authors
-
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+### Developers: 
+* **[João Paulo Rosner Vilar](vilarjp3@ufrn.edu.br)**
+* **[Luís Eduardo Anunciado Silva](cruxiu@ufrn.edu.br)** 
+* **[Shirley Ohara Telemaco de Freitas](shirleyohara@ufrn.edu.br)** 
+### Project Advisor: 
+* **[Rodrigo Texeira Ramos](texramos@gamil.com)** 
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
-
+This project is licensed under the GPL 3.0 - see the [LICENSE](LICENSE) file for details
