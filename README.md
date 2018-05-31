@@ -41,7 +41,7 @@ In the tab "Open", you can add all words of .txt file. In the tab "Update", you 
 * **Luís Eduardo Anunciado Silva ([cruxiu@ufrn.edu.br](mailto:cruxiu@ufrn.edu.br))** 
 * **Shirley Ohara Telemaco de Freitas ([shirleyohara@ufrn.edu.br](mailto:shirleyohara@ufrn.edu.br))** 
 ### Project Advisor: 
-* **Rodrigo Texeira Ramos ([texramos@gamil.com](mailto:texramos@gamil.com))** 
+* **Rodrigo Texeira Ramos ([texramos@gmail.com](mailto:texramos@gmail.com))** 
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
