@@ -37,11 +37,11 @@ In the tab "Open", you can add all words of .txt file. In the tab "Update", you 
 
 ## Authors
 ### Developers: 
-* **[João Paulo Rosner Vilar](vilarjp3@ufrn.edu.br)**
-* **[Luís Eduardo Anunciado Silva](cruxiu@ufrn.edu.br)** 
-* **[Shirley Ohara Telemaco de Freitas](shirleyohara@ufrn.edu.br)** 
+* **João Paulo Rosner Vilar ([vilarjp3@ufrn.edu.br](mailto:vilarjp3@ufrn.edu.br))**
+* **Luís Eduardo Anunciado Silva ([cruxiu@ufrn.edu.br](mailto:cruxiu@ufrn.edu.br))** 
+* **Shirley Ohara Telemaco de Freitas ([shirleyohara@ufrn.edu.br](mailto:shirleyohara@ufrn.edu.br))** 
 ### Project Advisor: 
-* **[Rodrigo Texeira Ramos](texramos@gamil.com)** 
+* **Rodrigo Texeira Ramos ([texramos@gamil.com](mailto:texramos@gamil.com))** 
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
